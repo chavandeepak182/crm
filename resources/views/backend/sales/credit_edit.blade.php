@@ -577,6 +577,7 @@
                     <div class="col-md-6">
                         <label for="login_bank_name">Login Bank Name*:</label>
                         <input type="text" id="login_bank_name" readonly required  class="form-control" value="{{$lead->login_bank_name}}" placeholder="Login Bank Name" name="login_bank_name"  autocomplete="off" />
+                        
                         @error('login_bank_name')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                         @enderror
@@ -592,12 +593,12 @@
                 <div class="col-sm-12 ">
                     <br>
                     <div class="col-md-6">
-                        <label for="approved_loan_amount">Approved Loan Amount:</label>
-                        <input type="number" id="approved_loan_amount"   class="form-control" value="{{$lead->approved_loan_amount}}" placeholder="Approved Loan Amount" name="approved_loan_amount"  autocomplete="off" />
-                        @error('approved_loan_amount')
-                        <div class="alert alert-danger" id="error">{{ $message }}</div>
-                        @enderror
-                    </div>
+                                <label for="approved_loan_amount">Approved Loan Amount :</label>
+                                <input type="text" id="approved_loan_amount"  class="form-control" placeholder="Approved Loan Amount" name="approved_loan_amount" value="{{$lead->approved_loan_amount}}" autocomplete="off" />
+                                @error('approved_loan_amount')
+                                <div class="alert alert-danger" id="error">{{ $message }}</div>
+                                @enderror
+                            </div>
                     <div class="col-md-6">
                         <label for="rate_of_interest">Rate Of Interest:</label>
                         <input type="text" id="rate_of_interest" placeholder="Rate Of Interest"   class="form-control" value="{{$lead->rate_of_interest}}"    name="rate_of_interest"  autocomplete="off" />

@@ -510,7 +510,7 @@ class SalesController extends Controller
         try{
             $user_id=Auth::user()->id;
             $lead =Lead::find($request->lead_id);
-            $lead->application_no = $request->approved_loan_amount;
+            $lead->approved_loan_amount = $request->approved_loan_amount;
             $lead->rate_of_interest = $request->rate_of_interest;
             $lead->disbursed_amount = $request->disbursed_amount;
             $lead->file_status = $request->file_status;
