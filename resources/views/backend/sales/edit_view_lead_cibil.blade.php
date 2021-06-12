@@ -466,7 +466,7 @@
                     <br>
                     <div class="col-md-6">
                         <label for="cibil_score">Who Generate Lead :</label>
-                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name}}" autocomplete="off" />
+                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name??'--'}}" autocomplete="off" />
                             @error('cibil_score')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                             @enderror

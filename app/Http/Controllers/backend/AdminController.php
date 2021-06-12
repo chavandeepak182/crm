@@ -221,49 +221,58 @@ $rules=[
 
  }
 
- public function change_password(){
-  return view('backend.admin.user.admin_change_password');
- }
- public function changePasswordaction(Request $request){
-    $inputs = $request->except('_token');
-    $rules=[
-      'new_password'     => 'required|min:6',
-      'con_password' => 'required|same:new_password'
+     public function change_password(){
+      return view('backend.admin.user.admin_change_password');
+     }
+     public function changePasswordaction(Request $request){
+        $inputs = $request->except('_token');
+        $rules=[
+          'new_password'     => 'required|min:6',
+          'con_password' => 'required|same:new_password'
 
-  ];
-  $validation = Validator::make($inputs, $rules);
-  if($validation->fails())
-  {
-  return redirect()->back()->withErrors($validation)->withInput();
+      ];
+      $validation = Validator::make($inputs, $rules);
+      if($validation->fails())
+      {
+      return redirect()->back()->withErrors($validation)->withInput();
 
-  }else{
-    $user_id=Auth::user()->id;
-    $user = User::where('id', $user_id)->first();
-    // return $user;
-    $oldPass=Hash::make($request->input('old_password'));
-    $newPass=$request->input('new_password');
-    $conPass=$request->input('con_password');
-        if($newPass != $conPass){
-        $request->session()->flash('error', 'Your new password and confirm password did not match !!');
-        return redirect('/change_password');
-        }else{
-        $user=User::find($user_id);
-        $user->password=Hash::make($newPass);
-        if($user->save()){
-            $request->session()->flash('success', 'Your password changed successfully  !!');
-        return redirect('/change_password');
+      }else{
+        $user_id=Auth::user()->id;
+        $user = User::where('id', $user_id)->first();
+        // return $user;
+        $oldPass=Hash::make($request->input('old_password'));
+        $newPass=$request->input('new_password');
+        $conPass=$request->input('con_password');
+            if($newPass != $conPass){
+            $request->session()->flash('error', 'Your new password and confirm password did not match !!');
+            return redirect('/change_password');
+            }else{
+            $user=User::find($user_id);
+            $user->password=Hash::make($newPass);
+            if($user->save()){
+                $request->session()->flash('success', 'Your password changed successfully  !!');
+            return redirect('/change_password');
+            }else{
+                $request->session()->flash('error', 'Something Went Wrong !!');
+            return redirect('/change_password');
+            }
+
+           }
+        }
+      }
+
+
+    public function delete_lead(Request $request,$lead_id){
+        $user = Lead::where('id', $lead_id)->delete();
+        if ($user) {
+            $request->session()->flash('success', 'Lead Successfully Deleted !!');
         }else{
             $request->session()->flash('error', 'Something Went Wrong !!');
-        return redirect('/change_password');
         }
-
-       }
+        return redirect('/lead_list_admin');
     }
-  }
-
-public function lead_list_admin(){
-  $leads = Lead::orderBy('id', 'desc')->get();
-  return view('backend.admin.lead_list_admin',compact('leads'));
-}
-
+    public function lead_list_admin(){
+        $leads = Lead::orderBy('id', 'desc')->get();
+        return view('backend.admin.lead_list_admin',compact('leads'));
+    }
  }//End Controller close

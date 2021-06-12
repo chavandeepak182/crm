@@ -38,7 +38,7 @@
 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Leads List</small></h2>
+                    <h2>Leads List</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -59,10 +59,13 @@
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
 
-                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action" style="width:100%">
+                    <table id="example" class="table table-striped table-bordered bulk_action" style="width:100%">
                       <thead>
                         <tr>
                           <th>Lead Id</th>
+                            <th style="display: none">File Doable</th>
+                            <th style="display: none">File Login</th>
+                            <th style="display: none">Type</th>
                           <th>Name</th>
                           <th>Mobile</th>
                           <th>City</th>
@@ -81,6 +84,9 @@
                         @foreach($leads as $key =>  $led)
                         <tr>
                         <td>{{ ($led->lead_id)?$led->lead_id:'--' }}</td>
+                            <td style="display: none">{{ ($led->file_doable)?$led->file_doable:'--' }}</td>
+                            <td style="display: none">{{ ($led->file_login)?$led->file_login:'--' }}</td>
+                            <td style="display: none">{{ ($led->type)?$led->type:'--' }}</td>
                           <td>{{ ($led->full_name)?$led->full_name:'--' }}</td>
                           <td>{{ ($led->mobile_number)?$led->mobile_number:''}}</td>
                           <td>{{ ($led->city)?$led->city:'--' }}</td>
@@ -117,5 +123,86 @@
 setTimeout(function() {
     $('#flassMessage').fadeOut("slow");
 }, 3000); //
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        "ordering": true,
+        "order": [[ 3, "desc" ]],
+        "info":false,
+        "dom": "<'row'<'col-sm-4'l><'col-sm-4 customDropDown'><'col-sm-4'f>>" +
+            "<'row'<'col-sm-12't>>" +
+            "<'row'<'col-sm-6'i><'col-sm-6'p>>",
+        initComplete: function () {
+            this.api().columns([1]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Doable</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([2]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Login</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([3]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">Type</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([10]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Status</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );
 
 </script>

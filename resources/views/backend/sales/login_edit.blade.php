@@ -466,7 +466,7 @@
                     <br>
                     <div class="col-md-6">
                         <label for="cibil_score">Who Generate Lead :</label>
-                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name}}" autocomplete="off" />
+                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name??''}}" autocomplete="off" />
                             @error('cibil_score')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                             @enderror
@@ -583,7 +583,7 @@
                           @php $sel = ''; @endphp
                             @if(isset($lead->login_bank_name) && $lead->login_bank_name==$bank->id)
                                 @php $sel = 'selected="selected"'; @endphp
-                            @endif                          
+                            @endif
                             <option value="{{$bank->id}}" {{$sel}}>{{$bank->bank_name}}</option>
 
                           @endforeach

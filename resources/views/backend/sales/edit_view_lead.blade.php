@@ -473,7 +473,7 @@
                     <br>
                     <div class="col-md-6">
                         <label for="cibil_score">Who Generate Lead :</label>
-                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name}}" autocomplete="off" />
+                        <input type="text"  class="form-control" readonly   value="{{$lead->get_added->name??''}}" autocomplete="off" />
                             @error('cibil_score')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                             @enderror
@@ -510,16 +510,28 @@
                             <img src="{{url('storage/app/public/'.$lead->image)}}" id="imgTag" class="img-fluid">
                         @else
                             <img src="{{asset('admin_media/user.png')}}" id="imgTag" class="img-fluid">
-                    <br> 
+                    <br>
                         @endif
-                       
+
                         <input type="file" id="image" class="form-control" name="image" autocomplete="off" />
                             @error('image')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                             @enderror
                     </div>
+                <div class="col-md-6">
+                    <label for="image">Document Photo :</label>
+                    @if(isset($lead->doc_image) && !empty($lead->doc_image))
+                        <img src="{{url('storage/app/public/'.$lead->doc_image)}}" id="imgTag" class="img-fluid">
+                    @else
+                        <img src="{{asset('admin_media/user.png')}}" id="imgTag" class="img-fluid">
+                        <br>
+                    @endif
+                    <input type="file" id="doc_image" class="form-control" name="doc_image" autocomplete="off" />
+                    @error('doc_image')
+                    <div class="alert alert-danger" id="error">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                   
                 </div>
                      <div class="col-md-10">
                         <br>

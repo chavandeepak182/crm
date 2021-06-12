@@ -499,8 +499,15 @@
                             @error('image')
                         <div class="alert alert-danger" id="error">{{ $message }}</div>
                             @enderror
-                    </div>                   
+                    </div>
+                  <div class="col-md-6">
+                    <label for="image">Document Photo :</label>
+                    <input type="file" id="doc_image" class="form-control" name="doc_image" autocomplete="off" />
+                    @error('doc_image')
+                    <div class="alert alert-danger" id="error">{{ $message }}</div>
+                    @enderror
                 </div>
+            </div>
                      <div class="col-md-4">
                         <br>
                         {{ csrf_field() }}
@@ -549,6 +556,7 @@ function getSeales(id)
         // });
 
 }
+
 
 
 </script>

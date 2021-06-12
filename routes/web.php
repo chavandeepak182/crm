@@ -83,8 +83,9 @@ Route::group(['middleware' => 'check_auth'], function () {
     Route::get('edit_view_users/{user_id}','backend\AdminController@edit_view_users');
     Route::post('/update','backend\AdminController@update');
     Route::get('/admin_setting','backend\AdminController@admin_setting');
-    Route::get('/lead_list_admin','backend\AdminController@lead_list_admin');    
+    Route::get('/lead_list_admin','backend\AdminController@lead_list_admin');
     Route::post('/admin_setting_update','backend\AdminController@admin_setting_update');
+    Route::get('/delete_lead_admin/{lead_id}','backend\AdminController@delete_lead_admin');
  });
 //login controoler
 Route::get('/admin','backend\LoginController@index');

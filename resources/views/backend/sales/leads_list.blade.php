@@ -1,5 +1,6 @@
 @include('backend.sales.layout.header')
  <!-- page content -->
+
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
@@ -59,10 +60,14 @@
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
 
-                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action" style="width:100%">
+                    <table id="example" class="table table-striped table-bordered bulk_action" style="width:100%">
                       <thead>
                         <tr>
                           <th>Lead Id</th>
+                          <th style="display: none">File Doable</th>
+                          <th style="display: none">File Login</th>
+                          <th style="display: none">Type</th>
+                            <th style="display: none">File Status</th>
                           @if (Auth::user()->role == "Sales")
                           <!-- <th>Purpose Of Loan</th> -->
                           <th>Name</th>
@@ -96,6 +101,10 @@
                         @foreach($leads as $key =>  $led)
                         <tr>
                         <td>{{ ($led->lead_id)?$led->lead_id:'--' }}</td>
+                        <td style="display: none">{{ ($led->file_doable)?$led->file_doable:'--' }}</td>
+                        <td style="display: none">{{ ($led->file_login)?$led->file_login:'--' }}</td>
+                        <td style="display: none">{{ ($led->type)?$led->type:'--' }}</td>
+                            <td style="display: none">{{ ($led->file_status)?$led->file_status:'--' }}</td>
                           @if (Auth::user()->role == "Sales")
                           <!-- <td>
                           @if ($led->purpose_of_loan =="CREDITCARD")
@@ -133,7 +142,7 @@
 
                           @if (Auth::user()->role=="Sales")
                           <a  href="{{ url('edit_view_lead_sales/'.$led->id) }}"><button class="btn btn-info"  title="Edit Lead" data-toggle="tooltip" ><i class="fa fa-pencil"></i></button></a>
-                          <a onClick="return confirm('Are you sure you want to delete this record ?')" href="{{ url('/delete_lead_sales/'.$led->id) }}"><button class="btn btn-danger" title="Delete Lead" data-toggle="tooltip"><i class="fa fa-trash"></i></button></a>
+{{--                          <a onClick="return confirm('Are you sure you want to delete this record ?')" href="{{ url('/delete_lead_sales/'.$led->id) }}"><button class="btn btn-danger" title="Delete Lead" data-toggle="tooltip"><i class="fa fa-trash"></i></button></a>--}}
                             @endif
                            {{-- <a href="{{ url('/view_users/'.$led->id) }}"><button class="btn btn-warning" title="View Lead" data-toggle="tooltip"><i class="fa fa-eye"></i></button></a> --}}
                           </td>
@@ -160,5 +169,86 @@
 setTimeout(function() {
     $('#flassMessage').fadeOut("slow");
 }, 3000); //
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        "ordering": true,
+        "order": [[ 3, "desc" ]],
+        "info":false,
+        "dom": "<'row'<'col-sm-4'l><'col-sm-4 customDropDown'><'col-sm-4'f>>" +
+            "<'row'<'col-sm-12't>>" +
+            "<'row'<'col-sm-6'i><'col-sm-6'p>>",
+        initComplete: function () {
+            this.api().columns([1]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Doable</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([2]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Login</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([3]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">Type</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+            this.api().columns([4]).every( function () {
+                var column = this;
+                var select = $('<select class="form-control col-sm-6"><option value="">File Status</option></select>')
+                    .appendTo( '.customDropDown' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );
 
 </script>

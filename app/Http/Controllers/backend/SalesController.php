@@ -156,11 +156,23 @@ class SalesController extends Controller
 
                 }
             }
+            if (isset($request->doc_image) && !empty($request->doc_image)) {
+                $validator = Validator::make(['doc_image' => $request->doc_image], ["doc_image" => "mimes:jpeg,jpg,png,bmp,gif|max:4096"]);
+                if ($validator->fails()) $request->session()->flash('error', 'Error: Invalid Image File Format!');
+                else {
+                    $logoFileNameDoc = round(microtime(true) * 10000) . str::random() . uniqid(rand()) . '.' . $request->doc_image->getClientOriginalExtension();
+                    Storage::disk('public')->put($logoFileNameDoc, File::get($request->doc_image));
+
+                }
+            }
             $user_id=Auth::user()->id;
             $lead = new Lead;
             $lead->lead_id = 'L'.$MaxCode;
             if(!empty($logoFileName)){
-                $lead->image = $logoFileName;     
+                $lead->image = $logoFileName;
+            }
+            if(!empty($logoFileNameDoc)){
+                $lead->doc_image = $logoFileNameDoc;
             }
             $lead->purpose_of_loan = $request->purpose_of_loan;
             $lead->full_name = $request->full_name;
@@ -261,11 +273,22 @@ class SalesController extends Controller
 
                 }
             }
+            if (isset($request->doc_image) && !empty($request->doc_image)) {
+                $validator = Validator::make(['doc_image' => $request->doc_image], ["doc_image" => "mimes:jpeg,jpg,png,bmp,gif|max:4096"]);
+                if ($validator->fails()) $request->session()->flash('error', 'Error: Invalid Image File Format!');
+                else {
+                    $logoFileNameDoc = round(microtime(true) * 10000) . str::random() . uniqid(rand()) . '.' . $request->doc_image->getClientOriginalExtension();
+                    Storage::disk('public')->put($logoFileNameDoc, File::get($request->doc_image));
+                }
+            }
             $user_id=Auth::user()->id;
             $lead_id=$request->lead_id;
             $lead =Lead::find($lead_id);
             if(!empty($logoFileName)){
-                $lead->image = $logoFileName;     
+                $lead->image = $logoFileName;
+            }
+            if(!empty($logoFileNameDoc)){
+                $lead->doc_image = $logoFileNameDoc;
             }
             $lead->purpose_of_loan = $request->purpose_of_loan;
             $lead->full_name = $request->full_name;
@@ -387,7 +410,7 @@ class SalesController extends Controller
             $lead->narration = $request->narration;
             $lead->pan_no = $request->pan_no;
             $lead->date_of_birth = $request->date_of_birth;
-            
+
             $lead->cibil_submitted = "cibil";
             if($request->hasFile('pdf_upload')){
                 $filepath = $request->file('pdf_upload');
